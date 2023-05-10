@@ -80,6 +80,7 @@ export async function getStaticProps({ params }) {
     props: {
       article,
     },
+    revalidate: 5,
   };
 }
 
