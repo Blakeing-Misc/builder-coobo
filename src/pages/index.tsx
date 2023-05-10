@@ -1,19 +1,17 @@
 import Container from "@/components/container";
 import Intro from "@/components/intro";
 import Layout from "@/components/layout";
-import Head from "next/head";
 import { builder } from "@builder.io/react";
 import PostCard from "@/components/post-card";
+import Meta from "@/components/meta";
 
 export default function Index({ allPosts, preview }) {
   const heroPost = allPosts[0];
   const morePosts = allPosts.slice(1);
   return (
     <>
+      <Meta />
       <Layout preview={preview}>
-        <Head>
-          <title>Next.js Blog Example with Builder.io</title>
-        </Head>
         <Container>
           <Intro />
           {heroPost && (

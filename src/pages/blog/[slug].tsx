@@ -6,7 +6,6 @@ import Header from "@/components/header";
 import PostHeader from "@/components/post-header";
 import Layout from "@/components/layout";
 import PostTitle from "@/components/post-title";
-import Head from "next/head";
 import { builder, BuilderContent, useIsPreviewing } from "@builder.io/react";
 import "@builder.io/widgets";
 
@@ -35,12 +34,6 @@ export default function Post({ post }) {
               {(data, loading, fullContent) =>
                 data && (
                   <article>
-                    <Head>
-                      <title>
-                        {data.title} | Next.js Blog Example with Builder.io
-                      </title>
-                      <meta property="og:image" content={data.image} />
-                    </Head>
                     {data.author?.value && (
                       <PostHeader
                         title={data.title}
