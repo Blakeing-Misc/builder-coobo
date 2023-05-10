@@ -49,11 +49,13 @@ function BlogArticle({ article }) {
               height={400}
             />
             {/* Render the Builder drag/drop'd content */}
-            <BuilderComponent
-              model="blog-article"
-              content={fullContent}
-              options={{ includeRefs: true }}
-            />
+            <div className="prose lg:prose-xl">
+              <BuilderComponent
+                model="blog-article"
+                content={fullContent}
+                options={{ includeRefs: true }}
+              />
+            </div>
           </div>
         </React.Fragment>
       )}
