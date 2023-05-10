@@ -8,6 +8,7 @@ import Layout from "@/components/layout";
 import PostTitle from "@/components/post-title";
 import { builder, BuilderContent, useIsPreviewing } from "@builder.io/react";
 import "@builder.io/widgets";
+import Meta from "@/components/meta";
 
 // Post model created to display a specific blog post.
 // read more at: https://www.builder.io/blog/creating-blog
@@ -19,39 +20,42 @@ export default function Post({ post }) {
   }
 
   return (
-    <Layout>
-      <Container>
-        <Header />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <BuilderContent
-              {...(!isPreviewing && { content: post })}
-              modelName="post"
-              options={{ includeRefs: true }}
-            >
-              {(data, loading, fullContent) =>
-                data && (
-                  <article>
-                    {data.author?.value && (
-                      <PostHeader
-                        title={data.title}
-                        coverImage={data.image}
-                        date={data.lastUpdated}
-                        author={data.author.value?.data}
-                      />
-                    )}
-                    <p>{data.intro}</p>
-                    <PostBody content={fullContent} />
-                  </article>
-                )
-              }
-            </BuilderContent>
-          </>
-        )}
-      </Container>
-    </Layout>
+    <>
+      <Meta />
+      <Layout>
+        <Container>
+          <Header />
+          {router.isFallback ? (
+            <PostTitle>Loading…</PostTitle>
+          ) : (
+            <>
+              <BuilderContent
+                {...(!isPreviewing && { content: post })}
+                modelName="post"
+                options={{ includeRefs: true }}
+              >
+                {(data, loading, fullContent) =>
+                  data && (
+                    <article>
+                      {data.author?.value && (
+                        <PostHeader
+                          title={data.title}
+                          coverImage={data.image}
+                          date={data.lastUpdated}
+                          author={data.author.value?.data}
+                        />
+                      )}
+                      <p>{data.intro}</p>
+                      <PostBody content={fullContent} />
+                    </article>
+                  )
+                }
+              </BuilderContent>
+            </>
+          )}
+        </Container>
+      </Layout>
+    </>
   );
 }
 
