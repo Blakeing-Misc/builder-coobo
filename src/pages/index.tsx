@@ -59,5 +59,9 @@ export async function getStaticProps({ preview = null }) {
 
   return {
     props: { allPosts, preview },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 5 seconds
+    revalidate: 5,
   };
 }
