@@ -1,65 +1,37 @@
-import Container from "@/components/container";
-import Intro from "@/components/intro";
-import Layout from "@/components/layout";
-import { builder } from "@builder.io/react";
-import PostCard from "@/components/post-card";
-import Meta from "@/components/meta";
+import { Builder, BuilderComponent, builder } from "@builder.io/react";
+import Header from "../components/header";
+import "@/components/hero";
+import "@/components/heading";
+import type { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
-export default function Index({ allPosts, preview }) {
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+export default function Home({
+  builderJson,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
-      <Meta />
-      <Layout preview={preview}>
-        <Container>
-          <Intro />
-          {heroPost && (
-            <PostCard
-              intro={heroPost.data.intro}
-              key={heroPost.data.slug}
-              title={heroPost.data.title}
-              coverImage={heroPost.data.image}
-              author={heroPost.data.author.value?.data}
-              slug={heroPost.data.slug}
-            />
-          )}
-          {morePosts.length > 0 && (
-            <section>
-              <h2 className="my-8  text-6xl md:text-7xl font-bold tracking-tighter leading-tight">
-                Latest
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 md:col-gap-16 lg:col-gap-32 row-gap-20 md:row-gap-32 mb-32">
-                {morePosts.map((post) => (
-                  <PostCard
-                    intro={post.data.intro}
-                    key={post.data.slug}
-                    title={post.data.title}
-                    coverImage={post.data.image}
-                    author={post.data.author.value?.data}
-                    slug={post.data.slug}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-        </Container>
-      </Layout>
+      <Header />
+      {/* Render your Builder.io content https://www.builder.io/c/docs/quickstart */}
+      <BuilderComponent model="page" content={builderJson} />
     </>
   );
 }
 
-export async function getStaticProps({ preview = null }) {
-  const allPosts =
-    (await builder.getAll("post", {
-      options: { includeRefs: true },
-    })) || null;
-
+// Fetch Builder.io content from the content API
+// https://www.builder.io/c/docs/content-api
+export async function getStaticProps() {
+  const content = await builder.get("page", { url: "/" }).promise();
   return {
-    props: { allPosts, preview },
+    props: { builderJson: content || null },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 5 seconds
     revalidate: 5,
   };
 }
+
+// Create a custom menu for your components
+// https://www.builder.io/c/docs/custom-components-visual-editor#organizing
+Builder.register("insertMenu", {
+  name: "My Components",
+  items: [{ name: "Heading" }, { name: "Hero" }],
+});
